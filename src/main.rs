@@ -1,7 +1,7 @@
  use std::io;
 
   fn display(vec:Vec <String>){
-     for i in 0..2{
+     for i in 0..vec.len(){
          println!("the element number {} is : {}",i,vec[i]);
      } 
  }
@@ -11,24 +11,31 @@
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to read line");
     v.push(input.to_string());
+    println!("Item added successfully: " );
+
 }
 
-fn remove(v:&mut Vec<String>){
+fn remove_contact(v:&mut Vec<String>){
     println!("Enter a name to remove from the list: " );
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to read line");
-    let mut index:usize = 6 ;
-    for i in 0..2{
-        if v[i] == input{
+    let mut index:Option<usize> = None ;
+    for i in 0..v.len(){
+        if v[i].trim() == input.trim(){
             println!("found it ");
-            index=i;
+            index=Some(i);
             break;
         }
     } 
-    if index != 6{
-        v.remove(index);
-    }else{
-        println!("Name invalid or does not exist.")
+    match index {
+        Some(i) => {
+            v.remove(i);
+            println!("Element removed. Vector is now: {:?}", v);
+        }
+        None => {
+            println!("Name invalid or does not exist.");
+        }
+
     }
 }
 
@@ -38,22 +45,22 @@ fn main() {
     v.push("rahma".to_string());
     v.push("mey".to_string());
     v.push("youssef".to_string());
-    // display(v);
-     
-    println!("to perform a task click on its corresponding number:\n *to display a contact: 1.\n *to display the list: 2. \n *to add contact: 3.\n *to remove contact: 4. " );
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).expect("Failed to read line");
-    let choice:i32 = input.trim().parse().expect("Invalid input");
+    
+    
+        println!("to perform a task click on its corresponding number:\n *to display list : 1.\n *to add contact: 2.\n *to remove contact: 3. " );
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let choice:i32 = input.trim().parse().expect("Invalid input");
 
-    match choice {
+        match choice {
+            
+            1 => display(v),
+            2 => add(&mut v),
+            3 => remove_contact(&mut v),
+            _ => println!("Invalid input."),
         
-        1 => display(v),
-        2 => add(&v),
-        3 => remove(&v),
-        _ => println!("Invalid input."),
-       
-    }
-
+        }
+    
     
    
     
