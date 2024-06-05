@@ -1,14 +1,27 @@
+ use std::io;
+ use serde::{Deserialize,Serialize};
+ use serde_json::{self, to_string, from_str};
+ use std::fs::{File};
+ use std::io::{Write, Read};
  
+#[derive(Serialize, Deserialize)]
  struct Person{
     name: String,
     phone: i64,
     email:String
  }
+ fn load_from_file() -> Vec<Person> {
+    let mut file = File::open("data.json").expect("Unable to open file");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).expect("Unable to read data");
+    from_str(&contents).expect("Unable to parse JSON")
+}
 
   fn display(v:&mut Vec <Person>){
-     for i in 0..v.len(){
-         println!("the element number {} is : {}",i,v[i].name);
+      for i in 0..v.len(){
+          println!("the element number {} is : {}",i,v[i].name);
      } 
+    
  }
 
  fn add(v:&mut Vec <Person>){
@@ -33,6 +46,7 @@
 
     
     v.push(new_person);
+    ser_and_write(v);
     println!("person added successfully! " );
 
  }
@@ -52,10 +66,8 @@ fn remove_contact(v:&mut Vec <Person>){
     match index {
         Some(i) => {
             v.remove(i);
+            ser_and_write(v);
             println!("Element removed. Vector is now:");
-            for i in 0..v.len(){
-                println!("{}",v[i].name);
-            }
         }
         None => {
             println!("Name invalid or does not exist.");
@@ -87,7 +99,11 @@ fn display_details(v:&mut Vec <Person>){
     }
 }
     
-
+    fn ser_and_write(v: &Vec<Person>){
+        let serialized = to_string(v).unwrap();
+        let mut file = File::create("data.json").expect("Unable to create file");
+        file.write_all(serialized.as_bytes()).expect("Unable to write data");
+}
 
 
 
@@ -97,25 +113,29 @@ fn display_details(v:&mut Vec <Person>){
 
 fn main() {
     
-    let mut v:Vec <Person> = Vec::new();
-     v.push(Person{
-        name: String::from("rahma"),
-        phone: 4569832,
-        email:String::from("rahma@medtech.tn"),
-     });
-     v.push(Person{
-        name: String::from("mey"),
-        phone: 7524131,
-        email:String::from("mey@medtech.tn"),
-     });
-     v.push(Person{
-        name: String::from("youssef"),
-        phone: 9632584,
-        email:String::from("youssef@medtech.tn"),
-     });
+    let mut v:Vec <Person> = load_from_file();
+    //  v.push(Person{
+    //     name: String::from("rahma"),
+    //     phone: 4569832,
+    //     email:String::from("rahma@medtech.tn"),
+    //  });
+    //  v.push(Person{
+    //     name: String::from("mey"),
+    //     phone: 7524131,
+    //     email:String::from("mey@medtech.tn"),
+    //  });
+    //  v.push(Person{
+    //     name: String::from("youssef"),
+    //     phone: 9632584,
+    //     email:String::from("youssef@medtech.tn"),
+    //  });
+    
+     
+
+   
     
     loop{
-        println!("to perform a task click on its corresponding number:\n *to display list : 1.\n *to add contact: 2.\n *to remove contact: 3.\n *to display details of a contact: 4.\n click anywhere else to exit the program. " );
+        println!("\nto perform a task click on its corresponding number:\n *to display list : 1.\n *to add contact: 2.\n *to remove contact: 3.\n *to display details of a contact: 4.\n click anywhere else to exit the program. " );
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("Failed to read line");
         
@@ -138,6 +158,7 @@ fn main() {
             },
         
         }
+        
     
     }
 } 
