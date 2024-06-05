@@ -1,6 +1,4 @@
- use std::io;
  
-
  struct Person{
     name: String,
     phone: i64,
@@ -35,7 +33,7 @@
 
     
     v.push(new_person);
-    println!("person added successfully: " );
+    println!("person added successfully! " );
 
  }
 
@@ -50,7 +48,7 @@ fn remove_contact(v:&mut Vec <Person>){
             index=Some(i);
             break;
         }
-    } 
+    }  
     match index {
         Some(i) => {
             v.remove(i);
