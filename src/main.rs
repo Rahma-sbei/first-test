@@ -2,7 +2,7 @@
 
  use serde::{Deserialize,Serialize};
  use serde_json::{self, to_string, from_str};
- use std::fs::{File};
+ use std::fs::File;
  use std::io::{Write, Read};
  
 #[derive(Serialize, Deserialize)]
@@ -113,27 +113,7 @@ fn display_details(v:&mut Vec <Person>){
 
 fn main() {
     
-    let mut v:Vec <Person> = load_from_file();
-    //  v.push(Person{
-    //     name: String::from("rahma"),
-    //     phone: 4569832,
-    //     email:String::from("rahma@medtech.tn"),
-    //  });
-    //  v.push(Person{
-    //     name: String::from("mey"),
-    //     phone: 7524131,
-    //     email:String::from("mey@medtech.tn"),
-    //  });
-    //  v.push(Person{
-    //     name: String::from("youssef"),
-    //     phone: 9632584,
-    //     email:String::from("youssef@medtech.tn"),
-    //  });
-    
-     
-
-   
-    
+    let mut v:Vec <Person> = load_from_file();    
     loop{
         println!("\nto perform a task click on its corresponding number:\n *to display list : 1.\n *to add contact: 2.\n *to remove contact: 3.\n *to display details of a contact: 4.\n click anywhere else to exit the program. " );
         let mut input = String::new();
